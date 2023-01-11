@@ -1,8 +1,8 @@
 import './App.css';
 import { ChakraProvider, Stack } from '@chakra-ui/react';
-import NavBarNotLogged from '../components/NavBarNotLogged';
-import AppRoutes from '../routes/AppRoutes';
-import NavBarLogged from '../components/NavBarLogged';
+import NavBarNotLogged from './components/NavBarNotLogged';
+import AppRoutes from './routes/AppRoutes';
+import NavBarLogged from './components/NavBarLogged';
 
 function App() {
   return (
