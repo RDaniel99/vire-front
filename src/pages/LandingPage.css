@@ -1,0 +1,20 @@
+.greenBox{
+    background-color: #a6e3d3;
+    width: 70%;
+    align-self: center;
+    height: 550px;
+    padding: 2%;
+    margin: 5%!important;
+    border-radius: 20px;
+}
+
+.searchInput{
+    background-color: whitesmoke!important;
+    border-radius: 10px;
+}
+
+.formBox{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}

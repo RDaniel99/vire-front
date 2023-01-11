@@ -1,0 +1,21 @@
+.playlistCardFlex {
+    cursor: pointer;
+    border-radius: 10px 10px 10px 10px;
+    background-color: azure;
+    width: 100%;
+    height: 200px;
+    justify-content: space-evenly;
+    flex-direction: row;
+}
+
+.playlistImage {
+    width: 20%;
+    height: 90%;
+    align-self: center;
+    border-radius: 10px 10px 10px 10px;
+    margin: 2%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: none;
+    display: flex;
+}
