@@ -2,13 +2,14 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import { GoCalendar } from 'react-icons/go';
 import { GiCommercialAirplane } from 'react-icons/gi'
 import "./VinylCard.css";
+import imageExample from '../assets/image.jpg'
 
 const VinylCard = ({ element }) => {
 
     return (
         <Flex className="elementCardFlex">
 
-            <Box className='elementImage' style={{ backgroundImage: 'url(' + element.image + ')' }}></Box>
+            <Box className='elementImage' style={{ backgroundImage: 'url(' + imageExample + ')' }}></Box>
 
             <Box display="flex" flexDirection="column" p="4" >
 
@@ -19,7 +20,7 @@ const VinylCard = ({ element }) => {
                     lineHeight="tight"
                     isTruncated
                 >
-                    {element.title}
+                    {element.vinyl}
                 </Text>
                 <Text
                     textAlign={'center'}
@@ -29,7 +30,7 @@ const VinylCard = ({ element }) => {
                     isTruncated
                     color={'grey'}
                 >
-                    Artist: {element.author}
+                    Artist: {element.artist}
                 </Text>
                 <Text
                     textAlign={'center'}
@@ -40,6 +41,16 @@ const VinylCard = ({ element }) => {
                     color={'grey'}
                 >
                     Genre: {element.genre}
+                </Text>
+                <Text
+                    textAlign={'center'}
+                    mt="1"
+                    as="h4"
+                    lineHeight="tight"
+                    isTruncated
+                    color={'grey'}
+                >
+                    Released Date: {element.releaseDate}
                 </Text>
 
             </Box>

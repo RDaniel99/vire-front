@@ -1,11 +1,10 @@
-import React from "react";
-import './DiscogRecommendation.css'
-import { Stack, Button } from "@chakra-ui/react";
+import React, { useState, useEffect } from "react";
+import { Stack, Button, Spinner } from "@chakra-ui/react";
 import ElementsList from "../components/ElementsList";
 import imageExample from '../assets/image.jpg'
 
-function DiscogRecommendation() {
-    
+function Recommendation() {
+
     const elements = [
 
         {
@@ -89,6 +88,47 @@ function DiscogRecommendation() {
         }
     ]
 
+    const [hasError, setErrors] = useState(false);
+    const [vinyls, setVinyls] = useState({});
+
+    async function fetchData() {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                "likedArtists": [
+                    "Frank Aleksandersen",
+                    "Elvis"
+                ],
+                "dislikedArtists": [
+                    "Beatles",
+                    "David"
+                ],
+                "likedGenres": [
+                    "disco"
+                ],
+                "dislikedGenres": [
+                    "rock"
+                ],
+                "startYear": 0,
+                "endYear": 0,
+                "limit": 0,
+                "pageSize": 5,
+                "pageIndex": 1
+                })
+        };
+
+        const res = await fetch("https://recommandationapi-374817.ew.r.appspot.com/recommendation/preferences", requestOptions);
+        res.json()
+            .then(res => setVinyls(res))
+            .catch(err => setErrors(err));
+
+        console.log(res);
+    }
+
+    useEffect(() => {
+        fetchData();
+    });
 
     return (
         <Stack className="greenBox">
@@ -98,15 +138,26 @@ function DiscogRecommendation() {
                 backgroundColor='#4ac7fa'
                 type='submit'
                 padding={'20px'}
-                width='60%'
+                width='30%'
                 alignSelf={'center'}
             >
-                Get Recommendation based on my Discog information
+                Get Recommendation based on my preferences
             </Button>
-            <ElementsList elements={elements}></ElementsList>
+            {elements.length > 0 
+            ?
+            <ElementsList elements={elements}/>
+             :
+            <Spinner
+                thickness='4px'
+                speed='0.65s'
+                emptyColor='gray.200'
+                color='blue.500'
+                size='xl'
+            />
+             }
         </Stack >
     )
 
 }
 
-export default DiscogRecommendation;
+export default Recommendation;
