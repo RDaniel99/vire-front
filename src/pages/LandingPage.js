@@ -8,7 +8,13 @@ function LandingPage() {
 
     const [seachInput, setSeachInput] = useState('')
     const handleSeachInputChange = (e) => setSeachInput(e.target.value)
-   
+
+    function onClickHandler(e){
+        e.preventDefault();
+        fetch('https://recommandationapi-374817.ew.r.appspot.com/recommendationSparQL')
+        .then(response => console.log(response.body))
+    }
+
     return (
         <Stack className="greenBox">
             <form className='formBox'>
@@ -28,6 +34,7 @@ function LandingPage() {
                     type='submit'
                     padding={'20px'}
                     alignSelf={'center'}
+                    onClick={onClickHandler}
                 >
                     Search
                 </Button>

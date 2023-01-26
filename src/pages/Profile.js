@@ -1,9 +1,38 @@
 import { Flex } from '@chakra-ui/react';
 import './LoginForm.css'
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from "react-router-dom";
 import { Button, Heading } from '@chakra-ui/react';
 import './Profile.css'
 
 function Profile() {
+
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const onSubmitDiscogs = async (e) => {
+
+        const res = await fetch('https://recommandationapi-374817.ew.r.appspot.com/discogs/request_token')
+
+        const token = await res.json()
+
+        await window.location.replace(token['authorizationUrl']);
+    }
+
+    useEffect(() => {
+        const oauth_verifier = searchParams.get("oauth_verifier")
+
+        const fetchData = async () => {
+            const data = await fetch(`https://recommandationapi-374817.ew.r.appspot.com/discogs/access_token?oauth_verifier=${oauth_verifier}`);
+            
+            await console.log(data.json())
+        }
+
+        if (searchParams !== '') {
+            fetchData().catch(console.error);
+        }
+
+    }, []);
+
 
     return (
         <Flex className='authForm' gap='4' justify='space-between' margin={'40vh'}>
@@ -17,7 +46,8 @@ function Profile() {
             <Button
                 className='submitButton full'
                 type='submit'
-        
+                onClick={onSubmitDiscogs}
+
             >
                 Associate account with Discogs
             </Button>
@@ -25,16 +55,16 @@ function Profile() {
             <Button
                 className='submitButton full'
                 type='submit'
-        
+
             >
-                Associate account with Discogs
+                Associate account with Last.fm
             </Button>
 
             <Button
                 className='submitButton'
                 colorScheme={'red'}
                 type='submit'
-        
+
             >
                 Logout
             </Button>
