@@ -14,6 +14,10 @@ export default function NavBarLogged() {
         {
             label: 'Profile',
             href: '/profile'
+        },
+        {
+            label: 'Recommed Me',
+            href: '/recommendation'
         }
     ];
 

@@ -5,6 +5,7 @@ import LoginForm from "../pages/LoginForm";
 import Profile from "../pages/Profile";
 import DiscogRecommendation from "../pages/DiscogRecommendation";
 import Playlist from "../pages/Playlist";
+import Recommendation from "../pages/Recommendation";
 
 function AppRoutes() {
     return (
@@ -15,6 +16,7 @@ function AppRoutes() {
             <Route exact path="/profile" element={<Profile/>}/>
             <Route exact path="/purchases" element={<DiscogRecommendation/>}/>
             <Route exact path="/playlist" element={<Playlist/>}/>
+            <Route exact path="/recommendation" element={<Recommendation/>}/>
         </Routes>
     )
 }
