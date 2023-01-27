@@ -23,8 +23,6 @@ function Profile() {
 
         const fetchData = async () => {
             const data = await fetch(`https://recommandationapi-374817.ew.r.appspot.com/discogs/access_token?oauth_verifier=${oauth_verifier}`);
-            
-            await console.log(data.json())
         }
 
         if (searchParams !== '') {
