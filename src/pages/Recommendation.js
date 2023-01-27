@@ -9,8 +9,10 @@ function Recommendation() {
     const [vinyls, setVinyls] = useState([]);
     const [showVinyls, setShowVinyls] = useState(false);
     const [likedArtists, setLikedArtists] = useState([]);
+    const [dislikedArtists, setDislikedArtists] = useState([]);
     const [recomendationIsLoading, setRecomendationIsLoading] = useState([false]);
 
+    const pageSize = 50;
     const vinylsLimit = 100;
     const preferencesURL = "https://recommandationapi-374817.ew.r.appspot.com/recommendation/preferences";
 
@@ -20,10 +22,7 @@ function Recommendation() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 "likedArtists": likedArtists,
-                "dislikedArtists": [
-                    "Beatles",
-                    "David"
-                ],
+                "dislikedArtists": dislikedArtists,
                 "likedGenres": [
                     "disco"
                 ],
@@ -33,7 +32,7 @@ function Recommendation() {
                 "startYear": 0,
                 "endYear": 0,
                 "limit": vinylsLimit,
-                "pageSize": 50,
+                "pageSize": pageSize,
                 "pageIndex": 1
                 })
         };
@@ -51,13 +50,17 @@ function Recommendation() {
             .catch(err => setErrors(err));
     }
 
-    const setPreferences = (checkedLikedArtists) => {
+    const setPreferencesLikedArtists = (checkedLikedArtists) => {
         setLikedArtists(checkedLikedArtists);
+    }
+
+    const setPreferencesDislikedArtists = (checkedDislikedArtists) => {
+        setDislikedArtists(checkedDislikedArtists);
     }
 
     return (
         <Stack className="greenBox">
-            <ArtistsSelection setPreferences={setPreferences}/>
+            <ArtistsSelection setLikedArtists={setPreferencesLikedArtists} setDislikedArtists={setPreferencesDislikedArtists}/>
             <Button
                 m={5}
                 backgroundColor='#4ac7fa'
