@@ -1,4 +1,4 @@
-import { Box, Flex, Button } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import React, { useRef } from "react";
 import "./ElementsLibrary.css";
 import {
@@ -38,7 +38,6 @@ const ElementsLibrary = ({ elements }) => {
         )
     }
 
-
     return (
         <Flex
             id="elementsLibrary"
@@ -51,8 +50,8 @@ const ElementsLibrary = ({ elements }) => {
                 <Box ref={ref} className="ScrollableList">
 
                     {elements.map((element) => (
-                        <Box className="elementsBox" key={element.id} mr="4" display="inline-block">
-                            <VinylCard key={element.id} element={element} />
+                        <Box className="elementsBox" key={element.vinyl + element.artist + element.genre} mr="4" display="inline-block">
+                            <VinylCard key={element.vinyl + element.artist + element.genre} element={element} />
                         </Box>
                     ))}
 

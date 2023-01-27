@@ -1,105 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Stack, Button, Spinner } from "@chakra-ui/react";
 import ElementsList from "../components/ElementsList";
-import imageExample from '../assets/image.jpg'
+import ArtistsSelection from "../components/ArtistsSelection"
 
 function Recommendation() {
 
-    const elements = [
-
-        {
-            id: 1,
-            image: imageExample,
-            vinyl: "Vinyl Name",
-            artist: "Author Name",
-            genre: "Genre"
-        },
-        {
-            id: 2,
-            image: imageExample,
-            vinyl: "Vinyl Name",
-            artist: "Author Name",
-            genre: "Genre"
-        }
-        ,
-        {
-            id: 3,
-            image: imageExample,
-            vinyl: "Vinyl Name",
-            artist: "Author Name",
-            genre: "Genre"
-        }, {
-            id: 4,
-            image: imageExample,
-            vinyl: "Vinyl Name",
-            artist: "Author Name",
-            genre: "Genre"
-        },
-        {
-            id: 5,
-            image: imageExample,
-            vinyl: "Vinyl Name",
-            artist: "Author Name",
-            genre: "Genre"
-        }
-        ,
-        {
-            id: 6,
-            image: imageExample,
-            vinyl: "Vinyl Name",
-            artist: "Author Name",
-            genre: "Genre"
-        },
-        {
-            id: 7,
-            image: imageExample,
-            vinyl: "Vinyl Name",
-            artist: "Author Name",
-            genre: "Genre"
-        }
-        ,
-        {
-            id: 8,
-            image: imageExample,
-            vinyl: "Vinyl Name",
-            artist: "Author Name",
-            genre: "Genre"
-        }, {
-            id: 9,
-            image: imageExample,
-            vinyl: "Vinyl Name",
-            artist: "Author Name",
-            genre: "Genre"
-        },
-        {
-            id: 10,
-            image: imageExample,
-            vinyl: "Vinyl Name",
-            artist: "Author Name",
-            genre: "Genre"
-        }
-        ,
-        {
-            id: 11,
-            image: imageExample,
-            vinyl: "Vinyl Name",
-            artist: "Author Name",
-            genre: "Genre"
-        }
-    ]
-
     const [hasError, setErrors] = useState(false);
-    const [vinyls, setVinyls] = useState({});
+    const [vinyls, setVinyls] = useState([]);
+    const [showVinyls, setShowVinyls] = useState(false);
+    const [likedArtists, setLikedArtists] = useState([]);
+    const [recomendationIsLoading, setRecomendationIsLoading] = useState([false]);
 
-    async function fetchData() {
+    const vinylsLimit = 100;
+    const preferencesURL = "https://recommandationapi-374817.ew.r.appspot.com/recommendation/preferences";
+
+    async function fetchVinyls() {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                "likedArtists": [
-                    "Frank Aleksandersen",
-                    "Elvis"
-                ],
+                "likedArtists": likedArtists,
                 "dislikedArtists": [
                     "Beatles",
                     "David"
@@ -112,49 +32,58 @@ function Recommendation() {
                 ],
                 "startYear": 0,
                 "endYear": 0,
-                "limit": 0,
-                "pageSize": 5,
+                "limit": vinylsLimit,
+                "pageSize": 50,
                 "pageIndex": 1
                 })
         };
 
-        const res = await fetch("https://recommandationapi-374817.ew.r.appspot.com/recommendation/preferences", requestOptions);
-        res.json()
-            .then(res => setVinyls(res))
-            .catch(err => setErrors(err));
+        console.log(requestOptions);
 
-        console.log(res);
+        setRecomendationIsLoading(true);
+        const res = await fetch(preferencesURL, requestOptions);
+        res.json()
+            .then(res => { 
+                console.log(res)
+                setVinyls(res.results)
+            })
+            .then(res => setRecomendationIsLoading(false))
+            .catch(err => setErrors(err));
     }
 
-    useEffect(() => {
-        fetchData();
-    });
+    const setPreferences = (checkedLikedArtists) => {
+        setLikedArtists(checkedLikedArtists);
+    }
 
     return (
         <Stack className="greenBox">
-
+            <ArtistsSelection setPreferences={setPreferences}/>
             <Button
-                mt={5}
+                m={5}
                 backgroundColor='#4ac7fa'
                 type='submit'
                 padding={'20px'}
-                width='30%'
+                width='60%'
                 alignSelf={'center'}
+                onClick={() => {setShowVinyls(true); fetchVinyls()}}
             >
                 Get Recommendation based on my preferences
             </Button>
-            {elements.length > 0 
-            ?
-            <ElementsList elements={elements}/>
-             :
-            <Spinner
-                thickness='4px'
-                speed='0.65s'
-                emptyColor='gray.200'
-                color='blue.500'
-                size='xl'
-            />
-             }
+            {showVinyls ? 
+                recomendationIsLoading 
+                ?
+                <Spinner
+                    thickness='4px'
+                    speed='0.65s'
+                    emptyColor='gray.200'
+                    color='blue.500'
+                    size='xl'
+                    alignSelf={'center'}
+                />
+                :
+                <ElementsList elements={vinyls}/>
+            : null
+            }
         </Stack >
     )
 
