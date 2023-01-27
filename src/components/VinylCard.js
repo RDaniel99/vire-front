@@ -9,7 +9,7 @@ const VinylCard = ({ element }) => {
     return (
         <Flex className="elementCardFlex">
 
-            <Box className='elementImage' style={{ backgroundImage: 'url(' + imageExample + ')' }}></Box>
+            <Box className='elementImage' style={{ backgroundImage: 'url(' + element.imgPath + ')' }}></Box>
 
             <Box display="flex" flexDirection="column" p="4" >
 

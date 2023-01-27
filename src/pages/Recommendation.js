@@ -35,20 +35,32 @@ function Recommendation() {
                 "limit": vinylsLimit,
                 "pageSize": 50,
                 "pageIndex": 1
-                })
+            })
         };
 
-        console.log(requestOptions);
-
+        console.log(requestOptions)
         setRecomendationIsLoading(true);
         const res = await fetch(preferencesURL, requestOptions);
         res.json()
-            .then(res => { 
-                console.log(res)
-                setVinyls(res.results)
+            .then(res => {
+                console.log(res.results)
+                loadVinyls(res.results)
             })
             .then(res => setRecomendationIsLoading(false))
             .catch(err => setErrors(err));
+    }
+
+    async function loadVinyls(fetchData) {
+        const vinyls = fetchData
+        const albumArt = require('album-art')
+
+        for (let vinyl of vinyls) {
+
+            const art = await albumArt(vinyl.artist)
+            vinyl.imgPath = art
+        }
+        console.log(vinyls)
+        setVinyls(vinyls)
     }
 
     const setPreferences = (checkedLikedArtists) => {
@@ -57,7 +69,7 @@ function Recommendation() {
 
     return (
         <Stack className="greenBox">
-            <ArtistsSelection setPreferences={setPreferences}/>
+            <ArtistsSelection setPreferences={setPreferences} />
             <Button
                 m={5}
                 backgroundColor='#4ac7fa'
@@ -65,24 +77,24 @@ function Recommendation() {
                 padding={'20px'}
                 width='60%'
                 alignSelf={'center'}
-                onClick={() => {setShowVinyls(true); fetchVinyls()}}
+                onClick={() => { setShowVinyls(true); fetchVinyls() }}
             >
                 Get Recommendation based on my preferences
             </Button>
-            {showVinyls ? 
-                recomendationIsLoading 
-                ?
-                <Spinner
-                    thickness='4px'
-                    speed='0.65s'
-                    emptyColor='gray.200'
-                    color='blue.500'
-                    size='xl'
-                    alignSelf={'center'}
-                />
-                :
-                <ElementsList elements={vinyls}/>
-            : null
+            {showVinyls ?
+                recomendationIsLoading
+                    ?
+                    <Spinner
+                        thickness='4px'
+                        speed='0.65s'
+                        emptyColor='gray.200'
+                        color='blue.500'
+                        size='xl'
+                        alignSelf={'center'}
+                    />
+                    :
+                    <ElementsList elements={vinyls} />
+                : null
             }
         </Stack >
     )
