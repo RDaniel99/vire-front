@@ -6,15 +6,31 @@ import defaultImage from "../assets/image.jpg";
 
 function VinylDetails() {
 
+    const lastfmURL = "http://ws.audioscrobbler.com/2.0/?";
+    const apiKey = "f4091c51ed7dfc1d8c150ea8d920897c";
+    const format = "json";
+    const action = "album.getinfo";
+
     const { vinylName , artist } = useParams();
-    const [vinylsDetails, setVinylsDetails] = useState([]);
+    const [vinylsDetails, setVinylsDetails] = useState({});
 
     useEffect(() => {
         fetchDetails();
-    }, [])
+    }, []);
 
-    const fetchDetails = () => {
-
+    const fetchDetails = async () => {
+        const res = await fetch(lastfmURL + new URLSearchParams({
+            method: action,
+            api_key: apiKey,
+            format: format,
+            artist: artist,
+            album: vinylName
+        }));
+        res.json()
+            .then(res => {
+                console.log(res.album)
+                setVinylsDetails(res.album);
+            })
     }
 
     return (
@@ -24,22 +40,37 @@ function VinylDetails() {
                 overflow='hidden'
                 variant='outline' 
                 mb={30}>
-                <Image
-                    objectFit='cover'
-                    maxW={{ base: '100%', sm: '200px' }}
-                    src={defaultImage}
-                    alt='Caffe Latte'/>
+                {
+                    vinylsDetails.image ? 
+                    <Image
+                        objectFit='cover'
+                        maxW={{ base: '100%', sm: '200px' }}
+                        src={vinylsDetails.image.find(item => item.size == '') 
+                        ? vinylsDetails.image.find(item => item.size == '')["#text"] !== '' 
+                            ? vinylsDetails.image.find(item => item.size == '')["#text"]
+                            : defaultImage
+                        : defaultImage}
+                        alt={artist + " " + vinylName}/>
+                    :
+                    <Spinner
+                        thickness='4px'
+                        speed='0.65s'
+                        emptyColor='gray.200'
+                        color='teal.500'
+                        size='xl'
+                        alignSelf={'center'}/>
+                }
 
                 <Stack>
                     <CardBody>
-                        <Heading size='md'>The Joshua Tree</Heading>
-                        <Text py='2'>U2</Text>
+                        <Heading size='md'>{vinylName}</Heading>
+                        <Text py='2'>{artist}</Text>
                     </CardBody>
 
                     <CardFooter>
                     <Button variant='solid' colorScheme='teal'>
                         <Link
-                            href="https://www.last.fm/music/U2/The+Joshua+Tree"
+                            href={vinylsDetails.url}
                             textAlign={'center'}
                             isExternal
                             lineHeight="tight"
@@ -56,38 +87,39 @@ function VinylDetails() {
                 </CardHeader>
 
                 <CardBody>
-                    <Stack divider={<StackDivider />} spacing='4'>
-                        <Box>
-                            <Heading size='xs' textTransform='uppercase'>
-                            Where the Streets Have No Name
-                            </Heading>
-                            <Link
-                                href="https://www.last.fm/music/U2/The+Joshua+Tree/Where+the+Streets+Have+No+Name"
-                                textAlign={'center'}
-                                isExternal
-                                lineHeight="tight"
-                                pt='5' 
-                                fontSize='sm'
-                                isTruncated>
-                                Play it on Last.fm <ExternalLinkIcon m='2px' />
-                            </Link>
-                        </Box>
-                        <Box>
-                            <Heading size='xs' textTransform='uppercase'>
-                            Where the Streets Have No Name
-                            </Heading>
-                            <Link
-                                href="https://www.last.fm/music/U2/The+Joshua+Tree/Where+the+Streets+Have+No+Name"
-                                textAlign={'center'}
-                                isExternal
-                                lineHeight="tight"
-                                pt='5' 
-                                fontSize='sm'
-                                isTruncated>
-                                Play it on Last.fm <ExternalLinkIcon m='2px' />
-                            </Link>
-                        </Box>
-                    </Stack>
+                    {
+                        vinylsDetails.tracks ?
+                        <Stack divider={<StackDivider />} spacing='4'>
+                        {
+                            vinylsDetails.tracks.track.map(t => {
+                                return (
+                                <Box>
+                                    <Heading size='xs' textTransform='uppercase'>
+                                    {t.name}
+                                    </Heading>
+                                    <Link
+                                        href={t.url}
+                                        textAlign={'center'}
+                                        isExternal
+                                        lineHeight="tight"
+                                        pt='5' 
+                                        fontSize='sm'
+                                        isTruncated>
+                                        Play it on Last.fm <ExternalLinkIcon m='2px' />
+                                    </Link>
+                                </Box>)
+                            })
+                        }
+                        </Stack>
+                        :
+                        <Spinner
+                            thickness='4px'
+                            speed='0.65s'
+                            emptyColor='gray.200'
+                            color='teal.500'
+                            size='xl'
+                            alignSelf={'center'}/>
+                    }
                 </CardBody>
                 </Card>
         </Stack>)

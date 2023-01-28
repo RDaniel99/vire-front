@@ -43,7 +43,7 @@ const ArtistSelectionForm = ({setChecked, labelText, helperText, colorScheme}) =
             <IoIosArrowForward
                 className="leftArrowSimple"
                 size="20px"
-                color={"brand.blue"}
+                color={"teal"}
                 onClick={async () => {setPageIndex(pageIndex + 1);}}
             />
         )
@@ -54,7 +54,7 @@ const ArtistSelectionForm = ({setChecked, labelText, helperText, colorScheme}) =
             <IoIosArrowBack
                 className="leftArrowSimple"
                 size="20px"
-                color={"black"}
+                color={"teal"}
                 onClick={() => {setPageIndex(pageIndex - 1);}}
             />
         )
@@ -109,7 +109,7 @@ const ArtistSelectionForm = ({setChecked, labelText, helperText, colorScheme}) =
                 thickness='4px'
                 speed='0.65s'
                 emptyColor='gray.200'
-                color='blue.500'
+                color='teal.500'
                 size='xl'
             />
             : artists.map(artist => {

@@ -20,7 +20,7 @@ const ElementsLibrary = ({ elements }) => {
             <IoIosArrowForward
                 className="leftArrowSimple"
                 size="120px"
-                color={"brand.blue"}
+                color={"teal"}
                 onClick={() => scroll(600)}
             />
         )
@@ -32,7 +32,7 @@ const ElementsLibrary = ({ elements }) => {
             <IoIosArrowBack
                 className="leftArrowSimple"
                 size="120px"
-                color={"black"}
+                color={"teal"}
                 onClick={() => scroll(-250)}
             />
         )
