@@ -106,7 +106,7 @@ function Recommendation() {
                 setDislikedGenres={setPreferencesDislikedGenres}/>
             <Button
                 m={10}
-                backgroundColor='#4dd7ff'
+                colorScheme='teal'
                 type='submit'
                 padding={'20px'}
                 width='60%'

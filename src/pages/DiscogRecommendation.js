@@ -40,7 +40,7 @@ function DiscogRecommendation() {
 
             <Button
                 mt={5}
-                backgroundColor='#4ac7fa'
+                colorScheme='teal'
                 type='submit'
                 padding={'20px'}
                 width='60%'

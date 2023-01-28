@@ -6,6 +6,7 @@ import Profile from "../pages/Profile";
 import DiscogRecommendation from "../pages/DiscogRecommendation";
 import Playlist from "../pages/Playlist";
 import Recommendation from "../pages/Recommendation";
+import VinylDetails from "../pages/VinylDetails";
 
 function AppRoutes() {
     return (
@@ -17,6 +18,7 @@ function AppRoutes() {
             <Route exact path="/purchases" element={<DiscogRecommendation/>}/>
             <Route exact path="/playlist" element={<Playlist/>}/>
             <Route exact path="/recommendation" element={<Recommendation/>}/>
+            <Route exact path="/vinyl/details/:vinylName/:artist" element={<VinylDetails/>}/>
         </Routes>
     )
 }

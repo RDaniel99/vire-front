@@ -1,8 +1,6 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
-import { GoCalendar } from 'react-icons/go';
-import { GiCommercialAirplane } from 'react-icons/gi'
+import { Box, Flex, Text, Link } from "@chakra-ui/react";
+import { ExternalLinkIcon } from '@chakra-ui/icons'
 import "./VinylCard.css";
-import imageExample from '../assets/image.jpg'
 
 const VinylCard = ({ element }) => {
 
@@ -52,6 +50,17 @@ const VinylCard = ({ element }) => {
                 >
                     Released Date: {element.releaseDate}
                 </Text>
+
+                <Link
+                    textAlign={'center'} 
+                    href={'/vinyl/details/' + element.vinyl + "/" + element.artist} 
+                    isExternal
+                    mt="1"
+                    lineHeight="tight"
+                    isTruncated
+                    color={'teal'}>
+                    More details <ExternalLinkIcon mx='2px' />
+                </Link>
 
             </Box>
         </Flex>

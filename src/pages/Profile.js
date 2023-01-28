@@ -45,25 +45,21 @@ function Profile() {
                 className='submitButton full'
                 type='submit'
                 onClick={onSubmitDiscogs}
-
-            >
+                colorScheme='teal'>
                 Associate account with Discogs
             </Button>
 
             <Button
                 className='submitButton full'
                 type='submit'
-
-            >
+                colorScheme='teal'>
                 Associate account with Last.fm
             </Button>
 
             <Button
                 className='submitButton'
                 colorScheme={'red'}
-                type='submit'
-
-            >
+                type='submit'>
                 Logout
             </Button>
 
