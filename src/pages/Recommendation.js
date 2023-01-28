@@ -1,20 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Stack, Button, Spinner } from "@chakra-ui/react";
 import ElementsList from "../components/ElementsList";
-import ArtistsSelection from "../components/ArtistsSelection"
+import ArtistsSelection from "../components/ArtistsSelection";
+import GenreSelection from "../components/GenreSelection";
 
 function Recommendation() {
+    const pageSize = 10;
+    const vinylsLimit = 100;
+    const preferencesURL = "https://recommandationapi-374817.ew.r.appspot.com/recommendation/preferences";
 
     const [hasError, setErrors] = useState(false);
     const [vinyls, setVinyls] = useState([]);
     const [showVinyls, setShowVinyls] = useState(false);
     const [likedArtists, setLikedArtists] = useState([]);
     const [dislikedArtists, setDislikedArtists] = useState([]);
+    const [likedGenres, setLikedGenres] = useState([]);
+    const [dislikedGenres, setDislikedGenres] = useState([]);
     const [recomendationIsLoading, setRecomendationIsLoading] = useState([false]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [totalCount, setTotalCount] = useState(0);
 
-    const pageSize = 50;
-    const vinylsLimit = 100;
-    const preferencesURL = "https://recommandationapi-374817.ew.r.appspot.com/recommendation/preferences";
+    useEffect(() => {
+        setRecomendationIsLoading(false);
+        if ( currentPage * pageSize >= totalCount ) {
+            setCurrentPage(1)
+        } else {
+            setCurrentPage(currentPage + 1);
+        }
+    }, [vinyls]);
+
+    useEffect(() => {
+        setCurrentPage(1)
+    }, [likedArtists, dislikedArtists, likedGenres, dislikedGenres]);
 
     async function fetchVinyls() {
         const requestOptions = {
@@ -23,17 +40,13 @@ function Recommendation() {
             body: JSON.stringify({
                 "likedArtists": likedArtists,
                 "dislikedArtists": dislikedArtists,
-                "likedGenres": [
-                    "disco"
-                ],
-                "dislikedGenres": [
-                    "rock"
-                ],
+                "likedGenres": likedGenres,
+                "dislikedGenres": dislikedGenres,
                 "startYear": 0,
                 "endYear": 0,
                 "limit": vinylsLimit,
                 "pageSize": pageSize,
-                "pageIndex": 1
+                "pageIndex": currentPage
             })
         };
 
@@ -42,10 +55,10 @@ function Recommendation() {
         const res = await fetch(preferencesURL, requestOptions);
         res.json()
             .then(res => {
-                console.log(res.results)
+                console.log(res)
+                setTotalCount(res.totalCount)
                 loadVinyls(res.results)
             })
-            .then(res => setRecomendationIsLoading(false))
             .catch(err => setErrors(err));
     }
 
@@ -54,11 +67,9 @@ function Recommendation() {
         const albumArt = require('album-art')
 
         for (let vinyl of vinyls) {
-
             const art = await albumArt(vinyl.artist)
             vinyl.imgPath = art
         }
-        console.log(vinyls)
         setVinyls(vinyls)
     }
 
@@ -70,12 +81,25 @@ function Recommendation() {
         setDislikedArtists(checkedDislikedArtists);
     }
 
+    const setPreferencesLikedGenres = (checkedLikedGenres) => {
+        setLikedGenres(checkedLikedGenres);
+    }
+
+    const setPreferencesDislikedGenres = (checkedDislikedGenres) => {
+        setDislikedGenres(checkedDislikedGenres);
+    }
+
     return (
-        <Stack className="greenBox">
-            <ArtistsSelection setLikedArtists={setPreferencesLikedArtists} setDislikedArtists={setPreferencesDislikedArtists}/>
+        <Stack className="greenBox" style={{height: "auto"}}>
+            <ArtistsSelection 
+                setLikedArtists={setPreferencesLikedArtists} 
+                setDislikedArtists={setPreferencesDislikedArtists}/>
+            <GenreSelection 
+                setLikedGenres={setPreferencesLikedGenres} 
+                setDislikedGenres={setPreferencesDislikedGenres}/>
             <Button
-                m={5}
-                backgroundColor='#4ac7fa'
+                m={10}
+                backgroundColor='#4dd7ff'
                 type='submit'
                 padding={'20px'}
                 width='60%'
@@ -93,8 +117,7 @@ function Recommendation() {
                         emptyColor='gray.200'
                         color='blue.500'
                         size='xl'
-                        alignSelf={'center'}
-                    />
+                        alignSelf={'center'}/>
                     :
                     <ElementsList elements={vinyls} />
                 : null

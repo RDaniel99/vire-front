@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Button } from "@chakra-ui/react";
-import ArtistSelectionForm from "./ArtistSelectionForm";
+import GenreSelectionForm from "./GenreSelectionForm";
 
 
-const ArtistsSelection = ( {setLikedArtists, setDislikedArtists} ) => {
+const GenreSelection = ( {setLikedGenres, setDislikedGenres} ) => {
 
-    const [showArtists, setShowArtists] = useState(false);
+    const [showGenres, setShowGenres] = useState(false);
 
     return (
     <div style={{width:"100%", textAlign:"center"}}>
@@ -16,20 +16,20 @@ const ArtistsSelection = ( {setLikedArtists, setDislikedArtists} ) => {
             p={'20px'}
             width='60%'
             alignSelf={'center'}
-            onClick={() => {setShowArtists(!showArtists);}}>
-            Set your preferences regarding artists
+            onClick={() => {setShowGenres(!showGenres);}}>
+            Set your preferences regarding genres
         </Button>
-        { showArtists 
+        { showGenres 
         ?             
         <div>
-            <ArtistSelectionForm 
-                setChecked={setLikedArtists} 
-                labelText="Select your favorite artists" 
+            <GenreSelectionForm 
+                setChecked={setLikedGenres} 
+                labelText="Select your favorite music genres" 
                 helperText="Select only if you're a fan."
                 colorScheme="green"/> 
-            <ArtistSelectionForm 
-                setChecked={setDislikedArtists} 
-                labelText="Select the artists you don't like" 
+            <GenreSelectionForm 
+                setChecked={setDislikedGenres} 
+                labelText="Select the music genre you don't want to hear" 
                 helperText="Select only if you are a hater."
                 colorScheme="red"/> 
         </div>
@@ -38,4 +38,4 @@ const ArtistsSelection = ( {setLikedArtists, setDislikedArtists} ) => {
     </div>);
 }
 
-export default ArtistsSelection;
+export default GenreSelection;

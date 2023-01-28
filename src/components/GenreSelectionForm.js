@@ -3,24 +3,24 @@ import { Stack, Spinner, FormControl, FormLabel, CheckboxGroup, Checkbox, FormHe
 import { IoIosArrowBack, IoIosArrowForward} from "react-icons/io";
 
 
-const ArtistSelectionForm = ({setChecked, labelText, helperText, colorScheme}) => {
+const GenreSelectionForm = ({setChecked, labelText, helperText, colorScheme}) => {
     const pageSize = 5;
-    const artistsLimit = 50;
+    const genreLimit = 50;
     const countURL = "https://recommandationapi-374817.ew.r.appspot.com/recommendation/count";
 
     const [hasError, setErrors] = useState(false);
 
-    const [artists, setArtists] = useState([]);
+    const [genres, setGenres] = useState([]);
     const [pageIndex, setPageIndex] = useState(1);
     const [showLeftArrow, setShowLeftArrow] = useState(false);
     const [showRightArrow, setShowRightArrow] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
-    const [checkedArtists, setCheckedArtists] = useState([]);
+    const [checkedGenres, setCheckedGenres] = useState([]);
 
     useEffect(() => {
-        fetchArtists(pageIndex);
+        fetchGenres(pageIndex);
 
-        if (pageIndex*pageSize >= artistsLimit) {
+        if (pageIndex*pageSize >= genreLimit) {
             setShowRightArrow(false);
         } else if (showRightArrow === false) {
             setShowRightArrow(true);
@@ -35,8 +35,8 @@ const ArtistSelectionForm = ({setChecked, labelText, helperText, colorScheme}) =
     }, [pageIndex]);
 
     useEffect(() => {
-        setChecked(checkedArtists);
-    }, [checkedArtists])
+        setChecked(checkedGenres);
+    }, [checkedGenres])
 
     const getRightArrows = () => {
         return ( 
@@ -60,14 +60,14 @@ const ArtistSelectionForm = ({setChecked, labelText, helperText, colorScheme}) =
         )
     }
 
-    const fetchArtists = async () => {
+    const fetchGenres = async () => {
         console.log(pageIndex)
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                "field": "artist",
-                "limit": artistsLimit,
+                "field": "genre",
+                "limit": genreLimit,
                 "pageSize": pageSize,
                 "pageIndex": pageIndex
             })
@@ -78,21 +78,21 @@ const ArtistSelectionForm = ({setChecked, labelText, helperText, colorScheme}) =
         res.json()
             .then(res => {
                 console.log(res)
-                setArtists(res.results)})
+                setGenres(res.results)})
             .then(res => setIsLoading(false))
             .catch(err => setErrors(true));
 
     }
 
-    const updateCheckedArtists = (isChecked, value) => {
-        let artistList = [...checkedArtists];
+    const updateCheckedGenres = (isChecked, value) => {
+        let genreList = [...checkedGenres];
         if (isChecked) {
-            artistList.push(value);
+            genreList.push(value);
         } else {
-            const index = artistList.indexOf(value);
-            artistList.splice(index, 1);
+            const index = genreList.indexOf(value);
+            genreList.splice(index, 1);
         }
-        setCheckedArtists(artistList);
+        setCheckedGenres(genreList);
     }
 
     if (hasError) {
@@ -113,12 +113,12 @@ const ArtistSelectionForm = ({setChecked, labelText, helperText, colorScheme}) =
                 color='blue.500'
                 size='xl'
             />
-            : artists.map(artist => {
+            : genres.map(genre => {
                 return (<Checkbox 
-                            value={artist.artist} 
-                            key={artist.artist} 
-                            onChange={(event) => {updateCheckedArtists(event.target.checked, event.target.value)}}>
-                            {artist.artist}
+                            value={genre.genre} 
+                            key={genre.genre} 
+                            onChange={(event) => {updateCheckedGenres(event.target.checked, event.target.value)}}>
+                            {genre.genre}
                         </Checkbox>)
             })}
             {showRightArrow ? getRightArrows() : null}
@@ -129,4 +129,4 @@ const ArtistSelectionForm = ({setChecked, labelText, helperText, colorScheme}) =
 )
 }
 
-export default ArtistSelectionForm;
+export default GenreSelectionForm;
