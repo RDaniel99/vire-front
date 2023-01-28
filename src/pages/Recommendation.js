@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Stack, Button, Spinner, Heading, Text } from "@chakra-ui/react";
+import { Stack, Button, Spinner, Heading, Text, Text } from "@chakra-ui/react";
 import ElementsList from "../components/ElementsList";
 import ArtistsSelection from "../components/ArtistsSelection";
 import GenreSelection from "../components/GenreSelection";
 import defaultImage from "../assets/image.jpg";
+import YearSelection from "../components/YearSelection";
 
 function Recommendation() {
     const pageSize = 10;
@@ -17,6 +18,7 @@ function Recommendation() {
     const [dislikedArtists, setDislikedArtists] = useState([]);
     const [likedGenres, setLikedGenres] = useState([]);
     const [dislikedGenres, setDislikedGenres] = useState([]);
+    const [yearRange, setYearRange] = useState([]);
     const [recomendationIsLoading, setRecomendationIsLoading] = useState([false]);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalCount, setTotalCount] = useState(0);
@@ -32,7 +34,7 @@ function Recommendation() {
 
     useEffect(() => {
         setCurrentPage(1)
-    }, [likedArtists, dislikedArtists, likedGenres, dislikedGenres]);
+    }, [likedArtists, dislikedArtists, likedGenres, dislikedGenres, yearRange]);
 
     async function fetchVinyls() {
         const requestOptions = {
@@ -43,8 +45,8 @@ function Recommendation() {
                 "dislikedArtists": dislikedArtists,
                 "likedGenres": likedGenres,
                 "dislikedGenres": dislikedGenres,
-                "startYear": 0,
-                "endYear": 0,
+                "startYear": yearRange[0],
+                "endYear": yearRange[1],
                 "limit": vinylsLimit,
                 "pageSize": pageSize,
                 "pageIndex": currentPage
@@ -56,10 +58,15 @@ function Recommendation() {
         res.json()
             .then(res => {
                 console.log(res)
-                setTotalCount(res.totalCount)
-                loadVinyls(res.results)
+                if(res.error) {
+                    setErrors(true)
+                } else {
+                    setTotalCount(res.totalCount)
+                    loadVinyls(res.results)
+                    setErrors(false);
+                }
             })
-            .catch(err => setErrors(err));
+            .catch(err => setErrors(true));
     }
 
     async function loadVinyls(fetchData) {
@@ -95,6 +102,14 @@ function Recommendation() {
         setDislikedGenres(checkedDislikedGenres);
     }
 
+    const setPreferencesYears = (yearRange) => {
+        setYearRange(yearRange);
+    }
+
+    if (hasError) {
+        return (<Text fontSize='2xl' color='tomato'>An error has occured, please try again.</Text>)
+    }
+
     return (
         <Stack className="greenBox" height={"auto"} as='flex'>
             <Heading as='h1' color={'white'} alignSelf='center' paddingBottom={'10px'}>Welcome to ViRe,</Heading>
@@ -105,6 +120,7 @@ function Recommendation() {
             <GenreSelection 
                 setLikedGenres={setPreferencesLikedGenres} 
                 setDislikedGenres={setPreferencesDislikedGenres}/>
+            <YearSelection setYearRange={setPreferencesYears}/>
             <Button
                 m={10}
                 colorScheme='teal'
