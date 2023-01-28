@@ -11,7 +11,7 @@ import VinylDetails from "../pages/VinylDetails";
 function AppRoutes() {
     return (
         <Routes>
-            <Route path="/" exact element={<LandingPage />} />
+            <Route path="/" exact element={<Recommendation />} />
             <Route exact path="/register" element={<RegisterForm/>}/>
             <Route exact path="/login" element={<LoginForm/>}/>
             <Route exact path="/profile" element={<Profile/>}/>

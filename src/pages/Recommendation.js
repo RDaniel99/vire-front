@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Stack, Button, Spinner, Text } from "@chakra-ui/react";
+import { Stack, Button, Spinner, Heading, Text, Text } from "@chakra-ui/react";
 import ElementsList from "../components/ElementsList";
 import ArtistsSelection from "../components/ArtistsSelection";
 import GenreSelection from "../components/GenreSelection";
@@ -53,7 +53,6 @@ function Recommendation() {
             })
         };
 
-        console.log(requestOptions)
         setRecomendationIsLoading(true);
         const res = await fetch(preferencesURL, requestOptions);
         res.json()
@@ -112,7 +111,9 @@ function Recommendation() {
     }
 
     return (
-        <Stack className="greenBox" height={"auto"}>
+        <Stack className="greenBox" height={"auto"} as='flex'>
+            <Heading as='h1' color={'white'} alignSelf='center' paddingBottom={'10px'}>Welcome to ViRe,</Heading>
+            <Text color={'white'}  size='lg' alignSelf='center' paddingBottom={'10px'}>Start by inserting your preferences</Text>
             <ArtistsSelection 
                 setLikedArtists={setPreferencesLikedArtists} 
                 setDislikedArtists={setPreferencesDislikedArtists}/>

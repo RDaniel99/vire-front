@@ -1,11 +1,13 @@
 import NavBar from './NavBar';
+import {TbVinyl } from "react-icons/tb";
 
 export default function NavBarLogged() {
 
     const ITEMS = [
         {
             label: 'Playlist',
-            href: '/playlist'
+            href: '/playlist',
+            icon: TbVinyl
         },
         {
             label: 'Past Purchases',
@@ -14,10 +16,6 @@ export default function NavBarLogged() {
         {
             label: 'Profile',
             href: '/profile'
-        },
-        {
-            label: 'Recommed Me',
-            href: '/recommendation'
         }
     ];
 
