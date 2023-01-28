@@ -10,7 +10,6 @@ const GenreSelection = ( {setLikedGenres, setDislikedGenres} ) => {
     return (
     <div style={{width:"100%", textAlign:"center"}}>
         <Button
-            mb={10}
             colorScheme='teal'
             type='submit'
             p={'20px'}
