@@ -3,6 +3,7 @@ import { Stack, Button, Spinner } from "@chakra-ui/react";
 import ElementsList from "../components/ElementsList";
 import ArtistsSelection from "../components/ArtistsSelection";
 import GenreSelection from "../components/GenreSelection";
+import defaultImage from "../assets/image.jpg";
 
 function Recommendation() {
     const pageSize = 10;
@@ -67,8 +68,14 @@ function Recommendation() {
         const albumArt = require('album-art')
 
         for (let vinyl of vinyls) {
-            const art = await albumArt(vinyl.artist)
-            vinyl.imgPath = art
+            try {
+                const art = await albumArt(vinyl.artist, {album: vinyl.vinyl})
+                vinyl.imgPath = art;
+            } catch (e) {
+                vinyl.imgPath = defaultImage;
+                console.log(e);
+            }
+
         }
         setVinyls(vinyls)
     }

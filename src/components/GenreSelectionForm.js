@@ -61,7 +61,6 @@ const GenreSelectionForm = ({setChecked, labelText, helperText, colorScheme}) =>
     }
 
     const fetchGenres = async () => {
-        console.log(pageIndex)
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

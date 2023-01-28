@@ -61,7 +61,6 @@ const ArtistSelectionForm = ({setChecked, labelText, helperText, colorScheme}) =
     }
 
     const fetchArtists = async () => {
-        console.log(pageIndex)
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
