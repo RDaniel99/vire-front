@@ -8,6 +8,8 @@ import {
     Heading
 } from '@chakra-ui/react';
 
+import { TbVinyl} from "react-icons/tb";
+
 const NavBar = ({ items }) => {
 
     const NavButtons = () => {
