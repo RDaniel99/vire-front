@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Stack, Spinner, FormControl, FormLabel, CheckboxGroup, Checkbox, FormHelperText } from "@chakra-ui/react";
+import { Stack, Spinner, FormControl, FormLabel, CheckboxGroup, Checkbox, FormHelperText, Text } from "@chakra-ui/react";
 import { IoIosArrowBack, IoIosArrowForward} from "react-icons/io";
 
 
@@ -77,7 +77,12 @@ const GenreSelectionForm = ({setChecked, labelText, helperText, colorScheme}) =>
         res.json()
             .then(res => {
                 console.log(res)
-                setGenres(res.results)})
+                if(res.error) {
+                    setErrors(true)
+                } else {
+                    setGenres(res.results)
+                    setErrors(false);
+                }})
             .then(res => setIsLoading(false))
             .catch(err => setErrors(true));
 
@@ -95,7 +100,7 @@ const GenreSelectionForm = ({setChecked, labelText, helperText, colorScheme}) =>
     }
 
     if (hasError) {
-        return (<div>Error</div>)
+        return (<Text fontSize='2xl' color='tomato'>An error has occured, please try again.</Text>)
     }
 
     return (     

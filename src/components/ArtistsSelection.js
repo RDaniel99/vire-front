@@ -14,10 +14,10 @@ const ArtistsSelection = ( {setLikedArtists, setDislikedArtists} ) => {
             colorScheme='teal'
             type='submit'
             p={'20px'}
-            width='60%'
+            width='40%'
             alignSelf={'center'}
             onClick={() => {setShowArtists(!showArtists);}}>
-            Set your preferences regarding artists
+            Set your artists preferences
         </Button>
         { showArtists 
         ?             

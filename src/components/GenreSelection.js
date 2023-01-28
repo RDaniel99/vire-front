@@ -14,10 +14,10 @@ const GenreSelection = ( {setLikedGenres, setDislikedGenres} ) => {
             colorScheme='teal'
             type='submit'
             p={'20px'}
-            width='60%'
+            width='40%'
             alignSelf={'center'}
             onClick={() => {setShowGenres(!showGenres);}}>
-            Set your preferences regarding genres
+            Set your genres preferences
         </Button>
         { showGenres 
         ?             
