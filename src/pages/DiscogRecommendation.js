@@ -3,6 +3,7 @@ import './DiscogRecommendation.css'
 import { Stack, Button, Spinner } from "@chakra-ui/react";
 import ElementsList from "../components/ElementsList";
 import { useState } from "react";
+import defaultImage from "../assets/image.jpg";
 
 function DiscogRecommendation() {
 
@@ -20,9 +21,13 @@ function DiscogRecommendation() {
         const albumArt = require('album-art')
 
         for (let vinyl of vinyls) {
-
-            const art = await albumArt(vinyl['artist'])
-            vinyl['imgPath'] = art
+            try {
+                const art = await albumArt(vinyl['artist'], {album: vinyl['vinyl']})
+                vinyl['imgPath'] = art
+            } catch (e) {
+                vinyl.imgPath = defaultImage;
+                console.log(e);
+            }
         }
 
         setElements(vinyls)
