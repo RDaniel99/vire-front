@@ -22,9 +22,8 @@ const NavBar = ({ items }) => {
                                 p={5}
                                 href={navItem.href ?? '/'}
                                 fontWeight={600}
-                                color={'black'}
                                 textAlign='center'
-                                backgroundColor='#4dd7ff'>
+                                colorScheme='teal'>
                                 {navItem.label}
                             </Button>
                         </Link>
@@ -35,7 +34,7 @@ const NavBar = ({ items }) => {
     };
 
     return (
-        <Box backgroundColor={'#96b3ea'}>
+        <Box backgroundColor={'#81E6D9'}>
             <Flex
                 color='green'
                 minH={'60px'}

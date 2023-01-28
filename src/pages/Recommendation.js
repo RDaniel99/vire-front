@@ -97,7 +97,7 @@ function Recommendation() {
     }
 
     return (
-        <Stack className="greenBox" style={{height: "auto"}}>
+        <Stack className="greenBox" height={"auto"}>
             <ArtistsSelection 
                 setLikedArtists={setPreferencesLikedArtists} 
                 setDislikedArtists={setPreferencesDislikedArtists}/>
