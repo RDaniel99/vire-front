@@ -12,7 +12,7 @@ function VinylDetails() {
     const action = "album.getinfo";
 
     var trackStructureData = {};
-    var vinylStructureDate = {};
+    var vinylStructureData = {};
 
     const { vinylName , artist } = useParams();
     const [vinylsDetails, setVinylsDetails] = useState({});
@@ -51,7 +51,7 @@ function VinylDetails() {
       };
 
       const getVinylStructuredData = (title, artist, vinylUrl, imgUrl) => {
-        vinylStructureDate = {
+        vinylStructureData = {
             "@context": {
                 "mo": "http://purl.org/ontology/mo/",
                 "dc": "http://purl.org/dc/elements/1.1/",
@@ -66,7 +66,7 @@ function VinylDetails() {
               },
               "mo:image": imgUrl
         }
-        return vinylStructureDate;
+        return vinylStructureData;
       };
 
     return (

@@ -8,6 +8,7 @@ const ArtistSelectionForm = ({setChecked, labelText, helperText, colorScheme}) =
     const pageSize = 5;
     const artistsLimit = 50;
     const countURL = "https://recommandationapi-374817.ew.r.appspot.com/recommendation/count";
+    var artistStructureData = {};
 
     const [hasError, setErrors] = useState(false);
 
@@ -117,6 +118,21 @@ const ArtistSelectionForm = ({setChecked, labelText, helperText, colorScheme}) =
         setCheckedArtists(artistList);
     }
 
+    const getArtistStructuredData = (artistName, imgUrl) => {
+        artistStructureData = {
+            "@context": {
+                "mo": "http://purl.org/ontology/mo/",
+                "dc": "http://purl.org/dc/elements/1.1/",
+                "foaf": "http://xmlns.com/foaf/0.1/"
+              },
+              "@type": "mo:MusicArtist",
+              "mo:image": imgUrl,
+              "foaf:name": artistName,
+        }
+        return artistStructureData;
+      };
+
+
     if (hasError) {
         return (<Text fontSize='2xl' color='tomato'>An error has occured, please try again.</Text>)
     }
@@ -139,16 +155,19 @@ const ArtistSelectionForm = ({setChecked, labelText, helperText, colorScheme}) =
         : artists.map(artist => {
                 return (            
                 <Card variant='outline' key={artist.artist} >
+                    <script type="application/ld+json">
+                        {JSON.stringify(getArtistStructuredData(artist.artist, artist.imgPath))}
+                    </script>
                     <CardHeader>
-                        <Heading size='md'>{artist.artist}</Heading>
+                        <Heading size='md'>{artistStructureData["foaf:name"]}</Heading>
                     </CardHeader>
                     <CardBody>
                         <Image
                             m={0}
                             objectFit='cover'
                             maxW={{ base: '100%' }}
-                            src={artist.imgPath}
-                            alt={artist.artist}
+                            src={artistStructureData["mo:image"]}
+                            alt={artistStructureData["foaf:name"]}
                             alignSelf={'center'}/>
                     </CardBody>
                     <CardFooter>
@@ -162,7 +181,7 @@ const ArtistSelectionForm = ({setChecked, labelText, helperText, colorScheme}) =
                                 <Checkbox 
                                 colorScheme={colorScheme} 
                                 ml={1}
-                                value={artist.artist}
+                                value={artistStructureData["foaf:name"]}
                                 onChange={(event) => {updateCheckedArtists(event.target.checked, event.target.value)}}>
                                     Select
                                 </Checkbox>
