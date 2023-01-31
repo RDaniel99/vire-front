@@ -41,6 +41,7 @@ function LoginForm() {
                 } else {
                     sessionStorage.setItem('token', (JSON.stringify(res.access_token)).slice(1, -1))
                     navigate('/')
+                    window.location.reload();
                     setErrors(false);
                 }
             })

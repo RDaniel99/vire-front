@@ -8,7 +8,6 @@ export default function NavBarController() {
 
     useEffect(() => {
         setToken(getToken());
-
     }, []);
 
     function getToken() {
