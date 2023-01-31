@@ -6,7 +6,7 @@ import VerticalLibrary from "./VerticalLibrary";
 
 const VerticalElementsList = () => {
 
-    const getPlaylistsURL = "http://127.0.0.1:5000/playlists"
+    const getPlaylistsURL = "https://user-microservice-wade.herokuapp.com/playlists"
 
     const [playlistsIds, setPlaylistsIds] = useState([])
 
@@ -27,7 +27,7 @@ const VerticalElementsList = () => {
             .then((response) => response.json())
             .then((data) => {
                 console.log(data)
-                setPlaylistsIds(data['message'])
+                setPlaylistsIds(data)
             });
         }
 
@@ -35,31 +35,37 @@ const VerticalElementsList = () => {
 
     useEffect(() => {
         
-        console.log('test')
-        console.log(playlistsIds)
-        console.log(playlistsIds !== undefined)
-        console.log(playlistsIds !== null)
-        console.log(playlistsIds.length)
-        console.log(playlistsIds.length > 0)
         if (playlistsIds !== undefined && playlistsIds !== null && playlistsIds.length > 0) {
 
             console.log('inside: ' + playlistsIds)
-            for (let index = 0; index < playlistsIds.length; index++) {
+            let playlists = []
 
-                let id = playlistsIds[index] 
+            const requests = playlistsIds.map(playlistId => {
                 const requestOptions = {
                     method: 'GET',
                     headers: {
                         'Authorization':  'Bearer ' + sessionStorage.getItem('token')
                     },
-                }
+                };
 
-                fetch(getPlaylistsURL + "/" + id + "/info", requestOptions)
-                .then((response) => response.json())
-                .then((data) => {
-                    setElements(data['message'])
-                })
-            }
+                return fetch(getPlaylistsURL + "/" + playlistId + "/info", requestOptions)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        playlists.push({
+                            title: data['meta']['title'],
+                            id: playlistId,
+                            author: data['meta']['creator'],
+                            image: data['meta']['image'],
+                            genre: data['meta']['genre']
+                        });
+                    });
+            });
+
+            Promise.all(requests)
+                .then(() => {
+                    console.log(playlists);
+                    setElements(playlists);
+                });
         }
 
     }, [playlistsIds])
