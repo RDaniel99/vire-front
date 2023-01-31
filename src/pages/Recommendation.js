@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Stack, Button, Spinner, Heading, Text, Text } from "@chakra-ui/react";
+import { Stack, Button, Spinner, Heading, Text } from "@chakra-ui/react";
 import ElementsList from "../components/ElementsList";
 import ArtistsSelection from "../components/ArtistsSelection";
 import GenreSelection from "../components/GenreSelection";

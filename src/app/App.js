@@ -1,8 +1,7 @@
 import './App.css';
 import { ChakraProvider, Stack } from '@chakra-ui/react';
-import NavBarNotLogged from '../components/NavBarNotLogged';
 import AppRoutes from '../routes/AppRoutes';
-import NavBarLogged from '../components/NavBarLogged';
+import NavBarController from '../components/NavBarController';
 
 function App() {
   return (
@@ -15,7 +14,7 @@ function App() {
         spacing={6}
 
       >
-        <NavBarLogged />
+        <NavBarController />
         <AppRoutes />
       </Stack>
     </ChakraProvider>

@@ -12,7 +12,6 @@ function LoginForm() {
     const handleEmailChange = (e) => setEmail(e.target.value)
     const handlePasswordChange = (e) => setPassword(e.target.value)
 
-
     return (
         <Flex className='authForm' gap='4' justify='space-between' margin={'40vh'}>
 
