@@ -37,6 +37,14 @@ const PlaylistCard = ({ element }) => {
                 padding={'20px'}
                 alignSelf={'flex-end'}
             >
+                See tracks
+            </Link>
+            <Link
+                mt={5}
+                type='submit'
+                padding={'20px'}
+                alignSelf={'flex-end'}
+            >
                 Share playlist
             </Link>
         </Flex>

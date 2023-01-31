@@ -1,7 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 import './LoginForm.css'
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { Button, Heading } from '@chakra-ui/react';
 import { useNavigate } from "react-router-dom"
 import jwt from 'jwt-decode'
@@ -13,7 +13,6 @@ function Profile() {
     const [isDisabledDiscogs, setIsDisablesDicsogs] = useState(false)
 
     const navigate = useNavigate()
-
 
     function getToken() {
         const tokenString = sessionStorage.getItem('token')
@@ -70,10 +69,11 @@ function Profile() {
     }
 
     const handleLogout = () => {
-
+    
         sessionStorage.removeItem('token')
         navigate('/')
         window.location.reload();
+
     }
 
 
