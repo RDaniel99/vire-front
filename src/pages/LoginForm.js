@@ -39,7 +39,7 @@ function LoginForm() {
                 if (res.error) {
                     setErrors(true)
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(res.access_token))
+                    sessionStorage.setItem('token', (JSON.stringify(res.access_token)).slice(1, -1))
                     navigate('/')
                     setErrors(false);
                 }

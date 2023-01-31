@@ -1,13 +1,15 @@
 import { Flex } from '@chakra-ui/react';
 import './LoginForm.css'
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { Button, Heading } from '@chakra-ui/react';
 import './Profile.css'
 
 function Profile() {
 
     const [searchParams, setSearchParams] = useSearchParams();
+
+    const navigate = useNavigate()
 
     const onSubmitDiscogs = async (e) => {
 
@@ -32,8 +34,9 @@ function Profile() {
     }, []);
 
     const handleLogout = () => {
-
+        
         sessionStorage.setItem('token', null)
+        navigate('/')
     }
 
 
@@ -64,7 +67,7 @@ function Profile() {
             <Button
                 className='submitButton'
                 colorScheme={'red'}
-                onSubmit={handleLogout}
+                onClick={handleLogout}
                 type='submit'>
                 Logout
             </Button>

@@ -12,9 +12,7 @@ export default function NavBarController() {
     }, []);
 
     function getToken() {
-        const tokenString = sessionStorage.getItem('token')
-        const userToken = JSON.parse(tokenString)
-        return userToken
+        return sessionStorage.getItem('token')
     } 
 
     if (!token)
