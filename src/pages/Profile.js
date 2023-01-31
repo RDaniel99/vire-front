@@ -3,7 +3,6 @@ import './LoginForm.css'
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Button, Heading } from '@chakra-ui/react';
-import { useNavigate } from "react-router-dom"
 import jwt from 'jwt-decode'
 import './Profile.css'
 
