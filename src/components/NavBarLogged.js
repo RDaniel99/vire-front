@@ -5,9 +5,12 @@ export default function NavBarLogged() {
 
     const ITEMS = [
         {
+            label: 'Recommendation',
+            href: '/recommendation'
+        },
+        {
             label: 'Playlist',
             href: '/playlist',
-            icon: TbVinyl
         },
         {
             label: 'Past Purchases',

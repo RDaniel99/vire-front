@@ -9,25 +9,19 @@ import Recommendation from "../pages/Recommendation";
 import VinylDetails from "../pages/VinylDetails";
 
 function AppRoutes() {
-    const [token, setToken] = useState()
 
-    if (!token) {
-        return (
-            <Routes>
-                <Route path="/" exact element={<Recommendation />} />
-                <Route exact path="/register" element={<RegisterForm />} />
-                <Route exact path="/login" element={<LoginForm />} />
-                <Route exact path="/recommendation" element={<Recommendation />} />
-                <Route exact path="/vinyl/details/:vinylName/:artist" element={<VinylDetails />} />
-            </Routes>
-        )
-    }
-    else {
+    return (
         <Routes>
+            <Route path="/" exact element={<Recommendation />} />
+            <Route exact path="/register" element={<RegisterForm />} />
+            <Route exact path="/login" element={<LoginForm />} />
+            <Route exact path="/recommendation" element={<Recommendation />} />
+            <Route exact path="/vinyl/details/:vinylName/:artist" element={<VinylDetails />} />
             <Route exact path="/profile" element={<Profile />} />
             <Route exact path="/purchases" element={<DiscogRecommendation />} />
             <Route exact path="/playlist" element={<Playlist />} />
+
         </Routes>
-    }
+    )
 }
 export default AppRoutes;

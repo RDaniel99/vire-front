@@ -31,6 +31,11 @@ function Profile() {
 
     }, []);
 
+    const handleLogout = () => {
+
+        sessionStorage.setItem('token', null)
+    }
+
 
     return (
         <Flex className='authForm' gap='4' justify='space-between' margin={'40vh'}>
@@ -59,6 +64,7 @@ function Profile() {
             <Button
                 className='submitButton'
                 colorScheme={'red'}
+                onSubmit={handleLogout}
                 type='submit'>
                 Logout
             </Button>

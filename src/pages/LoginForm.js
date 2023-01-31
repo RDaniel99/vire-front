@@ -1,16 +1,61 @@
 import { Flex } from '@chakra-ui/react';
-import './LoginForm.css'
 import { Link, Button, Text, Heading, FormControl, FormLabel, Input } from '@chakra-ui/react';
 import { useState } from 'react';
+import { useNavigate } from "react-router-dom"
 import './LoginForm.css'
 
 function LoginForm() {
 
-    const [email, setEmail] = useState('')
+    const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [hasError, setErrors] = useState(false)
+    const [loginIsLoading, setLoginIsLoading] = useState(false);
 
-    const handleEmailChange = (e) => setEmail(e.target.value)
+    const navigate = useNavigate()
+
+    const handleUsernameChange = (e) => setUsername(e.target.value)
     const handlePasswordChange = (e) => setPassword(e.target.value)
+
+
+    const loginURL = "https://user-microservice-wade.herokuapp.com/login"
+
+    async function handleLogin(e) {
+
+        e.preventDefault()
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                "username": username,
+                "password": password,
+            })
+        }
+        setLoginIsLoading(true)
+        const res = await fetch(loginURL, requestOptions);
+        res.json()
+            .then(res => {
+                setLoginIsLoading(false)
+                if (res.error) {
+                    setErrors(true)
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(res.access_token))
+                    navigate('/')
+                    setErrors(false);
+                }
+            })
+            .catch(err => setErrors(true));
+    }
+
+    const backToLogin = () => {
+        setErrors(false)
+    }
+
+    if (hasError) {
+
+        return (<Text fontSize='2xl' color='tomato'>An error has occured, please <Link onClick={backToLogin} color='red' fontWeight={'extrabold'}> try again</Link></Text>)
+    }
+
 
     return (
         <Flex className='authForm' gap='4' justify='space-between' margin={'40vh'}>
@@ -23,12 +68,12 @@ function LoginForm() {
 
             <form className='loginFormBox'>
                 <FormControl>
-                    <FormLabel fontSize='xs' className='darkBlueText'>EMAIL</FormLabel>
+                    <FormLabel fontSize='xs' className='darkBlueText'>USERNAME</FormLabel>
                     <Input isRequired
-                        type='email'
+                        type='text'
                         backgroundColor='whitesmoke'
-                        value={email}
-                        onChange={handleEmailChange}
+                        value={username}
+                        onChange={handleUsernameChange}
                     />
                 </FormControl>
                 <FormControl>
@@ -44,6 +89,7 @@ function LoginForm() {
                 <Button
                     className='submitButton'
                     type='submit'
+                    onClick={handleLogin}
                 >
                     Submit
                 </Button>

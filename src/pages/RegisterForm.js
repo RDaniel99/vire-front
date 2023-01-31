@@ -1,4 +1,4 @@
-import { Alert, Flex } from '@chakra-ui/react';
+import { Spinner, Flex } from '@chakra-ui/react';
 import './RegisterForm.css'
 import { Link, Button, Text, Heading, FormControl, FormLabel, Input, FormErrorMessage } from '@chakra-ui/react';
 import { useState } from 'react';
@@ -51,6 +51,7 @@ function RegisterForm() {
         res.json()
             .then(res => {
                 console.log(res)
+                setRegisterIsLoading(false)
                 if (res.error) {
                     setErrors(true)
                 } else {
@@ -74,7 +75,7 @@ function RegisterForm() {
         }
     }
 
-    const backToRegister = () =>{
+    const backToRegister = () => {
         setErrors(false)
     }
 
@@ -134,13 +135,25 @@ function RegisterForm() {
                     <FormErrorMessage>The confirmation is not equal with the password</FormErrorMessage>
 
                 </FormControl>
-                <Button
-                    className='submitButton'
-                    type='submit'
-                    onClick={handleSubmit}
-                >
-                    Register
-                </Button>
+                {registerIsLoading
+                    ?
+                    <Spinner
+                        thickness='4px'
+                        speed='0.65s'
+                        emptyColor='gray.200'
+                        color='teal.500'
+                        size='xl'
+                        alignSelf={'center'} />
+                    :
+                    <Button
+                        className='submitButton'
+                        type='submit'
+                        onClick={handleSubmit}
+                    >
+                        Register
+                    </Button>
+                }
+
             </form>
 
             <Text fontSize='sm' color='#2C5282'>

@@ -1,10 +1,21 @@
 import NavBarNotLogged from './NavBarNotLogged';
+import React, { useEffect, useState } from "react";
 import NavBarLogged from './NavBarLogged';
-import React, { useState } from "react";
 
 export default function NavBarController() {
 
-    const [token, setToken] = useState()
+    const [token, setToken] = useState(getToken());
+
+    useEffect(() => {
+        setToken(getToken());
+
+    }, []);
+
+    function getToken() {
+        const tokenString = sessionStorage.getItem('token')
+        const userToken = JSON.parse(tokenString)
+        return userToken
+    } 
 
     if (!token)
         return (
