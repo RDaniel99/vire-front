@@ -3,37 +3,77 @@ import './LoginForm.css'
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from "react-router-dom";
 import { Button, Heading } from '@chakra-ui/react';
+import { useNavigate } from "react-router-dom"
+import jwt from 'jwt-decode'
 import './Profile.css'
 
 function Profile() {
 
     const [searchParams, setSearchParams] = useSearchParams();
+    const [isDisabledDiscogs, setIsDisablesDicsogs] = useState(false)
 
-    const onSubmitDiscogs = async (e) => {
+    const navigate = useNavigate()
 
-        const res = await fetch('https://recommandationapi-374817.ew.r.appspot.com/discogs/request_token')
 
-        const token = await res.json()
-
-        await window.location.replace(token['authorizationUrl']);
+    function getToken() {
+        const tokenString = sessionStorage.getItem('token')
+        const userToken = JSON.parse(tokenString)
+        return userToken
     }
 
     useEffect(() => {
-        const oauth_verifier = searchParams.get("oauth_verifier")
-
         const fetchData = async () => {
             const data = await fetch(`https://recommandationapi-374817.ew.r.appspot.com/discogs/access_token?oauth_verifier=${oauth_verifier}`);
         }
 
-        if (searchParams !== '') {
+        const oauth_verifier = searchParams.get("oauth_verifier")
+
+        if (oauth_verifier) {
             fetchData().catch(console.error);
         }
-
     }, []);
+
+    async function getProfileData(user) {
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}`
+            },
+            body: JSON.stringify({
+            })
+        }
+
+        const profileURL = `https://user-microservice-wade.herokuapp.com/profile/${user}`
+        const res = await fetch(profileURL, requestOptions)
+        res.json()
+            .then(res => {
+                if (res.userData.discogs_secret) {
+
+                    setIsDisablesDicsogs(true)
+                }
+            })
+        return res
+    }
+
+    useEffect(() => {
+
+        const user = jwt(getToken())
+        const res = getProfileData(user.sub)
+    }, []);
+
+    const onSubmitDiscogs = async (e) => {
+
+        const res = await fetch('https://recommandationapi-374817.ew.r.appspot.com/discogs/request_token')
+        const token = await res.json()
+        window.location.replace(token['authorizationUrl']);
+    }
 
     const handleLogout = () => {
 
-        sessionStorage.setItem('token', null)
+        sessionStorage.removeItem('token')
+        navigate('/')
+        window.location.reload();
     }
 
 
@@ -47,6 +87,7 @@ function Profile() {
             </Flex>
 
             <Button
+                disabled={isDisabledDiscogs}
                 className='submitButton full'
                 type='submit'
                 onClick={onSubmitDiscogs}
@@ -64,7 +105,7 @@ function Profile() {
             <Button
                 className='submitButton'
                 colorScheme={'red'}
-                onSubmit={handleLogout}
+                onClick={handleLogout}
                 type='submit'>
                 Logout
             </Button>
