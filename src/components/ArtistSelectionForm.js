@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Stack, Spinner, FormControl, FormLabel, CheckboxGroup, Checkbox, FormHelperText, Text } from "@chakra-ui/react";
+import { Spinner, FormControl, FormLabel, Checkbox,Image, FormHelperText, Text, SimpleGrid, Card, CardHeader, Heading, CardBody, CardFooter, Button } from "@chakra-ui/react";
 import { IoIosArrowBack, IoIosArrowForward} from "react-icons/io";
+import defaultImage from "../assets/image.jpg";
 
 
 const ArtistSelectionForm = ({setChecked, labelText, helperText, colorScheme}) => {
@@ -80,12 +81,29 @@ const ArtistSelectionForm = ({setChecked, labelText, helperText, colorScheme}) =
                 if(res.error) {
                     setErrors(true)
                 } else {
-                    setArtists(res.results)
+                    loadArtistsImages(res.results)
                     setErrors(false);
                 }})
             .then(res => setIsLoading(false))
             .catch(err => setErrors(true));
 
+    }
+
+    async function loadArtistsImages(fetchData) {
+        const artists = fetchData
+        const albumArt = require('album-art')
+
+        for (let artist of artists) {
+            try {
+                const art = await albumArt(artist.artist)
+                artist.imgPath = art;
+            } catch (e) {
+                artist.imgPath = defaultImage;
+                console.log(e);
+            }
+
+        }
+        setArtists(artists)
     }
 
     const updateCheckedArtists = (isChecked, value) => {
@@ -104,12 +122,13 @@ const ArtistSelectionForm = ({setChecked, labelText, helperText, colorScheme}) =
     }
 
     return (     
-    <FormControl as='fieldset' style={{textAlign:"center"}}>
-        <FormLabel as='legend' mb={5} style={{textAlign:"center"}}>{labelText}</FormLabel>
-        <CheckboxGroup colorScheme={colorScheme} size='lg' style={{textAlign:"center"}}>
-            <Stack spacing={[1,5]} direction={['column', 'row']}>
-            {showLeftArrow ? getLeftArrows() : null}
-            {isLoading ?
+    <FormControl as='fieldset' style={{textAlign:"center"}} mt={5}>
+        <FormLabel as='legend' style={{textAlign:"center"}}>{labelText}</FormLabel>
+        <FormHelperText mb={10}>{helperText}</FormHelperText>
+        <div style={{display: "inline"}}>
+        {showLeftArrow ? getLeftArrows() : null}
+        <SimpleGrid columns={5} spacing={5}>
+        {isLoading ?
             <Spinner
                 thickness='4px'
                 speed='0.65s'
@@ -117,18 +136,44 @@ const ArtistSelectionForm = ({setChecked, labelText, helperText, colorScheme}) =
                 color='teal.500'
                 size='xl'
             />
-            : artists.map(artist => {
-                return (<Checkbox 
-                            value={artist.artist} 
-                            key={artist.artist} 
-                            onChange={(event) => {updateCheckedArtists(event.target.checked, event.target.value)}}>
-                            {artist.artist}
-                        </Checkbox>)
+        : artists.map(artist => {
+                return (            
+                <Card variant='outline' key={artist.artist} >
+                    <CardHeader>
+                        <Heading size='md'>{artist.artist}</Heading>
+                    </CardHeader>
+                    <CardBody>
+                        <Image
+                            m={0}
+                            objectFit='cover'
+                            maxW={{ base: '100%' }}
+                            src={artist.imgPath}
+                            alt={artist.artist}
+                            alignSelf={'center'}/>
+                    </CardBody>
+                    <CardFooter>
+                        <Button
+                            mb={5}
+                            cvariant='solid' colorScheme={colorScheme}
+                            type='submit'
+                            p={'20px'}
+                            width='100%'
+                            alignSelf={'center'}>
+                                <Checkbox 
+                                colorScheme={colorScheme} 
+                                ml={1}
+                                value={artist.artist}
+                                onChange={(event) => {updateCheckedArtists(event.target.checked, event.target.value)}}>
+                                    Select
+                                </Checkbox>
+                        </Button>
+                    </CardFooter>
+                </Card>)
             })}
-            {showRightArrow ? getRightArrows() : null}
-            </Stack>
-        </CheckboxGroup>
-        <FormHelperText mt={5} mb={10}>{helperText}</FormHelperText>
+        </SimpleGrid>
+        {showRightArrow ? getRightArrows() : null}
+        </div>
+        
     </FormControl> 
 )
 }
