@@ -11,6 +11,9 @@ function VinylDetails() {
     const format = "json";
     const action = "album.getinfo";
 
+    var trackStructureData = {};
+    var vinylStructureDate = {};
+
     const { vinylName , artist } = useParams();
     const [vinylsDetails, setVinylsDetails] = useState({});
 
@@ -33,6 +36,39 @@ function VinylDetails() {
             })
     }
 
+    const getTrackStructuredData = (title, artist, trackUrl) => {
+        trackStructureData = {
+            "@context": "https://schema.org/",
+            "@type": "MusicRecording",
+            "name": title,
+            "byArtist": {
+                "@type": "Person",
+                "name": artist
+            },
+            "url": trackUrl
+        }
+        return trackStructureData;
+      };
+
+      const getVinylStructuredData = (title, artist, vinylUrl, imgUrl) => {
+        vinylStructureDate = {
+            "@context": {
+                "mo": "http://purl.org/ontology/mo/",
+                "dc": "http://purl.org/dc/elements/1.1/",
+                "foaf": "http://xmlns.com/foaf/0.1/"
+              },
+              "@id": vinylUrl,
+              "@type": "mo:Vinyl",
+              "dc:title": title,
+              "foaf:maker": {
+                "@type": "mo:MusicArtist",
+                "foaf:name": artist
+              },
+              "mo:image": imgUrl
+        }
+        return vinylStructureDate;
+      };
+
     return (
         <Stack className="greenBox" height={"auto"}>
             <Card
@@ -45,9 +81,9 @@ function VinylDetails() {
                     <Image
                         objectFit='cover'
                         maxW={{ base: '100%', sm: '200px' }}
-                        src={vinylsDetails.image.find(item => item.size == '') 
-                        ? vinylsDetails.image.find(item => item.size == '')["#text"] !== '' 
-                            ? vinylsDetails.image.find(item => item.size == '')["#text"]
+                        src={vinylsDetails.image.find(item => item.size === '') 
+                        ? vinylsDetails.image.find(item => item.size === '')["#text"] !== '' 
+                            ? vinylsDetails.image.find(item => item.size === '')["#text"]
                             : defaultImage
                         : defaultImage}
                         alt={artist + " " + vinylName}/>
@@ -90,15 +126,23 @@ function VinylDetails() {
                     {
                         vinylsDetails.tracks ?
                         <Stack divider={<StackDivider />} spacing='4'>
+                        {<script type="application/ld+json">
+                            {JSON.stringify(getVinylStructuredData(vinylName, artist, vinylsDetails.url, vinylsDetails.image.find(item => item.size === '')["#text"] !== '' 
+                            ? vinylsDetails.image.find(item => item.size === '')["#text"]
+                            : defaultImage))}
+                        </script>}
                         {
                             vinylsDetails.tracks.track.map(t => {
                                 return (
                                 <Box>
+                                    <script type="application/ld+json">
+                                        {JSON.stringify(getTrackStructuredData(t.name, t.artist.name, t.url))}
+                                    </script>
                                     <Heading size='xs' textTransform='uppercase'>
-                                    {t.name}
+                                    {trackStructureData.name}
                                     </Heading>
                                     <Link
-                                        href={t.url}
+                                        href={trackStructureData.url}
                                         textAlign={'center'}
                                         isExternal
                                         lineHeight="tight"

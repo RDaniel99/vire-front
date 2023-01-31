@@ -25,7 +25,7 @@ const GenreSelection = ( {setLikedGenres, setDislikedGenres} ) => {
                 setChecked={setLikedGenres} 
                 labelText="Select your favorite music genres" 
                 helperText="Select only if you're a fan."
-                colorScheme="green"/> 
+                colorScheme="teal"/> 
             <GenreSelectionForm 
                 setChecked={setDislikedGenres} 
                 labelText="Select the music genre you don't want to hear" 
