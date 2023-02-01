@@ -6,7 +6,7 @@ import defaultImage from "../assets/image.jpg";
 
 function VinylDetails() {
 
-    const lastfmURL = "http://ws.audioscrobbler.com/2.0/?";
+    const lastfmURL = "https://ws.audioscrobbler.com/2.0/?";
     const apiKey = "f4091c51ed7dfc1d8c150ea8d920897c";
     const format = "json";
     const action = "album.getinfo";
