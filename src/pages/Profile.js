@@ -1,8 +1,8 @@
 import { Flex } from '@chakra-ui/react';
 import './LoginForm.css'
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from "react-router-dom";
-import { Button, Heading } from '@chakra-ui/react';
+import { redirect, useSearchParams } from "react-router-dom";
+import { Button, Heading, Text, Link, Alert, AlertIcon, AlertTitle, AlertDescription } from '@chakra-ui/react';
 import { useNavigate } from "react-router-dom"
 import jwt from 'jwt-decode'
 import './Profile.css'
@@ -11,6 +11,8 @@ function Profile() {
 
     const [searchParams, setSearchParams] = useSearchParams();
     const [isDisabledDiscogs, setIsDisablesDicsogs] = useState(false)
+    const [hasError, setErrors] = useState(false);
+    const [showAlert, setShowAlert] = useState(false)
 
     const navigate = useNavigate()
 
@@ -23,14 +25,40 @@ function Profile() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await fetch(`https://recommandationapi-374817.ew.r.appspot.com/discogs/access_token?oauth_verifier=${oauth_verifier}`);
+            const requestOptions = {
+                method: 'GET',
+                headers: {
+                    Authorization: `${getToken()}`
+                }
+            }
+
+            const access_token_url = `https://recommandationapi-374817.ew.r.appspot.com/discogs/access_token?verifier=${oauth_verifier}`
+            const res = await fetch(access_token_url, requestOptions)
+            return res
         }
 
         const oauth_verifier = searchParams.get("oauth_verifier")
 
-        if (oauth_verifier) {
-            fetchData().catch(console.error);
+        const getStatus = async () => {
+            if (oauth_verifier) {
+                const res = await fetchData()
+
+                res.json().then(res => {
+                    if (res) {
+                        setShowAlert(true)
+
+                        setTimeout(() => {
+                            setShowAlert(false);
+                          }, 3000);
+                    }
+                })
+                    .catch(console.error);
+            }
         }
+
+        getStatus()
+        navigate('/profile')
+
     }, []);
 
     async function getProfileData(user) {
@@ -59,14 +87,14 @@ function Profile() {
     useEffect(() => {
 
         const user = jwt(getToken())
-        const res = getProfileData(user.sub)
+        getProfileData(user.sub)
     }, []);
 
     const onSubmitDiscogs = async (e) => {
 
         const res = await fetch('https://recommandationapi-374817.ew.r.appspot.com/discogs/request_token')
         const token = await res.json()
-        window.location.replace(token['authorizationUrl']);
+        window.location.replace(token.authorizationUrl);
     }
 
     const handleLogout = () => {
@@ -76,10 +104,27 @@ function Profile() {
         window.location.reload();
     }
 
+    const backToProfile = () => {
+        setErrors(false)
+    }
+
+    if (hasError) {
+
+        return (<Text fontSize='2xl' color='tomato'>An error has occured, please <Link onClick={backToProfile} color='red' fontWeight={'extrabold'}> try again</Link></Text>)
+    }
+
+
+
 
     return (
         <Flex className='authForm' gap='4' justify='space-between' margin={'40vh'}>
-
+            {showAlert && (
+                <Alert status='success'>
+                    <AlertIcon />
+                    <AlertTitle>Connected</AlertTitle>
+                    <AlertDescription>Connected to Discogs</AlertDescription>
+                </Alert>
+            )}
             <Flex className='titleForm'>
                 <Heading as='h3' size='lg' className='darkBlueText'>
                     Profile
