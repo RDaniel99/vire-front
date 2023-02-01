@@ -12,14 +12,13 @@ const VerticalLibrary = ({ elements }) => {
     };
 
     let playlistStructureData = {};
-    const getPlaylistStructuredData = (playlistImg, playlistName, playlistGenre, playlistAuthor, playlistTracks) => {
+    const getPlaylistStructuredData = (playlistImg, playlistName, playlistAuthor, playlistTracks) => {
         playlistStructureData = {
             "@context": "https://schema.org/",
             "@type": "MusicPlaylist",
             "numTracks": playlistTracks.length,
             "image": playlistImg,
             "name": playlistName,
-            "genre": playlistGenre,
             "author": playlistAuthor,
             "track": {
                 "@type": "ItemList",
@@ -50,7 +49,7 @@ const VerticalLibrary = ({ elements }) => {
                     {elements.map((element) => (
                         <Box className="elementsBox" key={element.id} mr="4">
                             {<script type="application/ld+json">
-                                {JSON.stringify(getPlaylistStructuredData(element.image, element.title, element.genre, element.author, element.tracks))}
+                                {JSON.stringify(getPlaylistStructuredData(element.image, element.title, element.author, element.tracks))}
                             </script>}
                             <PlaylistCard key={element.id} element={element} />
                         </Box>
