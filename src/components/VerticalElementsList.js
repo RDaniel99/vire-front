@@ -56,7 +56,8 @@ const VerticalElementsList = () => {
                             id: playlistId,
                             author: data['meta']['creator'],
                             image: data['meta']['image'],
-                            genre: data['meta']['genre']
+                            genre: data['meta']['genre'],
+                            tracks: data['tracks']
                         });
                     });
             });
@@ -77,14 +78,38 @@ const VerticalElementsList = () => {
             image: imageExample,
             title: "Vinyl Name",
             author: "Author Name",
-            genre: "Genre"
+            genre: "Genre",
+            tracks: [
+                {
+                    "creator": "Author Name",
+                    "image": imageExample,
+                    "title": "Song title 1"
+                },
+                {
+                    "creator": "Author Name",
+                    "image": imageExample,
+                    "title": "Song title 2"
+                }
+            ]
         },
         {
             id: 2,
             image: imageExample,
             title: "Vinyl Name",
             author: "Author Name",
-            genre: "Genre"
+            genre: "Genre",
+            tracks: [
+                {
+                    "creator": "Author Name",
+                    "image": imageExample,
+                    "title": "Song title 1"
+                },
+                {
+                    "creator": "Author Name",
+                    "image": imageExample,
+                    "title": "Song title 2"
+                }
+            ]
         }
         ,
         {
@@ -92,20 +117,56 @@ const VerticalElementsList = () => {
             image: imageExample,
             title: "Vinyl Name",
             author: "Author Name",
-            genre: "Genre"
+            genre: "Genre",
+            tracks: [
+                {
+                    "creator": "Author Name",
+                    "image": imageExample,
+                    "title": "Song title 1"
+                },
+                {
+                    "creator": "Author Name",
+                    "image": imageExample,
+                    "title": "Song title 2"
+                }
+            ]
         }, {
             id: 4,
             image: imageExample,
             title: "Vinyl Name",
             author: "Author Name",
-            genre: "Genre"
+            genre: "Genre",
+            tracks: [
+                {
+                    "creator": "Author Name",
+                    "image": imageExample,
+                    "title": "Song title 1"
+                },
+                {
+                    "creator": "Author Name",
+                    "image": imageExample,
+                    "title": "Song title 2"
+                }
+            ]
         },
         {
             id: 5,
             image: imageExample,
             title: "Vinyl Name",
             author: "Author Name",
-            genre: "Genre"
+            genre: "Genre",
+            tracks: [
+                {
+                    "creator": "Author Name",
+                    "image": imageExample,
+                    "title": "Song title 1"
+                },
+                {
+                    "creator": "Author Name",
+                    "image": imageExample,
+                    "title": "Song title 2"
+                }
+            ]
         }
         ,
         {
@@ -113,43 +174,38 @@ const VerticalElementsList = () => {
             image: imageExample,
             title: "Vinyl Name",
             author: "Author Name",
-            genre: "Genre"
+            genre: "Genre",
+            tracks: [
+                {
+                    "creator": "Author Name",
+                    "image": imageExample,
+                    "title": "Song title 1"
+                },
+                {
+                    "creator": "Author Name",
+                    "image": imageExample,
+                    "title": "Song title 2"
+                }
+            ]
         },
         {
             id: 7,
             image: imageExample,
             title: "Vinyl Name",
             author: "Author Name",
-            genre: "Genre"
-        }
-        ,
-        {
-            id: 8,
-            image: imageExample,
-            title: "Vinyl Name",
-            author: "Author Name",
-            genre: "Genre"
-        }, {
-            id: 9,
-            image: imageExample,
-            title: "Vinyl Name",
-            author: "Author Name",
-            genre: "Genre"
-        },
-        {
-            id: 10,
-            image: imageExample,
-            title: "Vinyl Name",
-            author: "Author Name",
-            genre: "Genre"
-        }
-        ,
-        {
-            id: 11,
-            image: imageExample,
-            title: "Vinyl Name",
-            author: "Author Name",
-            genre: "Genre"
+            genre: "Genre",
+            tracks: [
+                {
+                    "creator": "Author Name",
+                    "image": imageExample,
+                    "title": "Song title 1"
+                },
+                {
+                    "creator": "Author Name",
+                    "image": imageExample,
+                    "title": "Song title 2"
+                }
+            ]
         }
     ])
 
