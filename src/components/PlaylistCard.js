@@ -32,6 +32,29 @@ const PlaylistCard = ({ element }) => {
         )
     }
 
+    const preferencesURL = "https://recommandationapi-374817.ew.r.appspot.com/recommendation/preferences";
+
+    async function getRecommendation() {
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                "likedArtists": [element['author']],
+                "likedGenres": [element['genre']],
+                "limit": 100,
+                "pageSize": 10,
+                "pageIndex": Math.floor(Math.random() * 10)
+            })
+        }
+
+        const res = await fetch(preferencesURL, requestOptions);
+        res.json()
+        .then(res => {
+            console.log(res)
+        })
+        .catch(err => console.log(err))
+    }
+
     return (
         <Flex className="playlistCardFlex ">
 
@@ -55,6 +78,7 @@ const PlaylistCard = ({ element }) => {
                     type='submit'
                     padding={'20px'}
                     alignSelf={'center'}
+                    onClick={getRecommendation}
                 >
                     Get Recommendation based on this playlist
                 </Button>
