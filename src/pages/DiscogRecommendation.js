@@ -11,8 +11,7 @@ function DiscogRecommendation() {
 
     function getToken() {
         const tokenString = sessionStorage.getItem('token')
-        const userToken = JSON.parse(tokenString)
-        return userToken
+        return tokenString
     }
  
     const navigate = useNavigate()

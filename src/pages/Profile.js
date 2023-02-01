@@ -1,9 +1,8 @@
 import { Flex } from '@chakra-ui/react';
 import './LoginForm.css'
 import React, { useState, useEffect } from 'react';
-import { redirect, useSearchParams } from "react-router-dom";
+import { redirect, useSearchParams, useNavigate } from "react-router-dom";
 import { Button, Heading, Text, Link, Alert, AlertIcon, AlertTitle, AlertDescription } from '@chakra-ui/react';
-import { useNavigate } from "react-router-dom"
 import jwt from 'jwt-decode'
 import './Profile.css'
 
@@ -16,11 +15,9 @@ function Profile() {
 
     const navigate = useNavigate()
 
-
     function getToken() {
         const tokenString = sessionStorage.getItem('token')
-        const userToken = JSON.parse(tokenString)
-        return userToken
+        return tokenString
     }
 
     useEffect(() => {
@@ -58,7 +55,6 @@ function Profile() {
 
         getStatus()
         navigate('/profile')
-
     }, []);
 
     async function getProfileData(user) {
@@ -98,7 +94,7 @@ function Profile() {
     }
 
     const handleLogout = () => {
-
+    
         sessionStorage.removeItem('token')
         navigate('/')
         window.location.reload();
