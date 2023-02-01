@@ -6,6 +6,7 @@
     height: 200px;
     justify-content: space-evenly;
     flex-direction: row;
+    display: flex;
 }
 
 .playlistImage {
@@ -17,5 +18,18 @@
     background-position: center;
     background-size: cover;
     background-repeat: none;
+    /* display: flex; */
+}
+
+.tracks {
+    background-color: azure;
     display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    flex-direction: column;
+}
+
+.margin2 {
+    margin-left: 2%;
+
 }

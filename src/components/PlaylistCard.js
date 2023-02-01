@@ -20,11 +20,12 @@ const PlaylistCard = ({ element }) => {
     const Tracks = () => {
         console.log(element)
         return (
-            <div id = 'tracks'>
+            <div className = 'tracks'>
                 {
                     element['tracks'].map((track) => (
-                            <Box className="elementsBox" key={String(element.id) + track.title} mr="4">
-                                <TrackCard key={track.title + track.creator} track={track} />
+                            <Box className="elementsBox margin2" key={String(element.id) + track.title} mr="4">
+                                <TrackCard className="chakra-heading css-uqsj0l"
+                                 key={track.title + track.creator} track={track} />
                             </Box>
                         ))
                 }
@@ -56,6 +57,7 @@ const PlaylistCard = ({ element }) => {
     }
 
     return (
+        <>
         <Flex className="playlistCardFlex ">
 
             <Box className='playlistImage' style={{ backgroundImage: 'url(' + element.image + ')' }}></Box>
@@ -103,10 +105,12 @@ const PlaylistCard = ({ element }) => {
             >
                 Share playlist
             </Link>
-            {
-                showTracks ? <Tracks/> : null 
-            }
+            
         </Flex>
+        {
+            showTracks ? <Tracks/> : null
+        }
+        </>
     );
 }
 

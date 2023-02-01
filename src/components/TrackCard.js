@@ -30,7 +30,8 @@ const TrackCard = ({track}) => {
                 fontWeight={'bold'}
                 as="h4"
                 lineHeight="tight"
-                isTruncated>
+                isTruncated
+                >
                 {track.creator}
             </Text>
 
