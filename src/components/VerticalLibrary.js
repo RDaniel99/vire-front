@@ -2,7 +2,6 @@ import { Box, Flex } from "@chakra-ui/react";
 import React, { useRef } from "react";
 import PlaylistCard from "./PlaylistCard";
 import "./VerticalLibrary.css";
-import VinylCard from "./VinylCard";
 
 const VerticalLibrary = ({ elements }) => {
     const ref = useRef(null);
@@ -12,6 +11,33 @@ const VerticalLibrary = ({ elements }) => {
         ref.current.scrollLeft += scrollOffset;
     };
 
+    let playlistStructureData = {};
+    const getPlaylistStructuredData = (playlistImg, playlistName, playlistGenre, playlistAuthor, playlistTracks) => {
+        playlistStructureData = {
+            "@context": "https://schema.org/",
+            "@type": "MusicPlaylist",
+            "numTracks": playlistTracks.length,
+            "image": playlistImg,
+            "name": playlistName,
+            "genre": playlistGenre,
+            "author": playlistAuthor,
+            "track": {
+                "@type": "ItemList",
+                "itemListElement": []
+            }
+        }
+
+        playlistTracks.forEach(track => playlistStructureData.track.itemListElement.push({
+            "@type": "MusicRecording",
+            "name": track.title,
+            "byArtist": {
+                "@type": "Person",
+                "name": track.creator
+                },
+            "image": track.image
+        }))
+        return playlistStructureData;
+      };
 
     return (
         <Flex
@@ -23,6 +49,9 @@ const VerticalLibrary = ({ elements }) => {
 
                     {elements.map((element) => (
                         <Box className="elementsBox" key={element.id} mr="4">
+                            {<script type="application/ld+json">
+                                {JSON.stringify(getPlaylistStructuredData(element.image, element.title, element.genre, element.author, element.tracks))}
+                            </script>}
                             <PlaylistCard key={element.id} element={element} />
                         </Box>
                     ))}
