@@ -36,12 +36,33 @@ const PlaylistCard = ({ element }) => {
     const preferencesURL = "https://recommandationapi-374817.ew.r.appspot.com/recommendation/preferences";
 
     async function getRecommendation() {
+
+        let genres = []
+        let authors = []
+
+        console.log('track-uri: ' + element['tracks'])
+
+        for(let index = 0; index < element['tracks'].length; index++) {
+
+            let track = element['tracks'][index]
+
+            console.log('H-am luat ' + track)
+
+            if (!genres.includes(track['genre'])) {
+                genres.push(track['genre'])
+            }
+
+            if (!authors.includes(track['creator'])) {
+                authors.push(track['creator'])
+            }
+        }
+
         const requestOptions = {
             method: 'POST',
             headers: {'Content-Type': 'application/json' },
             body: JSON.stringify({
-                "likedArtists": [element['author']],
-                "likedGenres": [element['genre']],
+                "likedArtists": authors,
+                "likedGenres": genres,
                 "limit": 100,
                 "pageSize": 10,
                 "pageIndex": Math.floor(Math.random() * 10)
@@ -96,14 +117,6 @@ const PlaylistCard = ({ element }) => {
                 }
             >
                 {showTracks ? "Hide Tracks": "See tracks"}
-            </Link>
-            <Link
-                mt={5}
-                type='submit'
-                padding={'20px'}
-                alignSelf={'flex-end'}
-            >
-                Share playlist
             </Link>
             
         </Flex>

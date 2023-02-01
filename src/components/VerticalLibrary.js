@@ -33,6 +33,7 @@ const VerticalLibrary = ({ elements }) => {
                 "@type": "Person",
                 "name": track.creator
                 },
+            "genre": track.genre,
             "image": track.image
         }))
         return playlistStructureData;

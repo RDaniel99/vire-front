@@ -32,7 +32,17 @@ const TrackCard = ({track}) => {
                 lineHeight="tight"
                 isTruncated
                 >
-                {track.creator}
+                Author: {track.creator}
+            </Text>
+            <Text
+                textAlign={'left'}
+                mt="1"
+                fontWeight={'bold'}
+                as="h4"
+                lineHeight="tight"
+                isTruncated
+                >
+                Genre: {track.genre}
             </Text>
 
         </Box>
