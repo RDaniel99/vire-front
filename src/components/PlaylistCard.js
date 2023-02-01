@@ -1,11 +1,16 @@
-import { Button, Box, Flex, Text, Link } from "@chakra-ui/react";
+import { Button, Box, Flex, Text, Link, Spinner, Center} from "@chakra-ui/react";
 import { useState } from "react";
 import "./PlaylistCard.css";
+import ElementsList from "../components/ElementsList";
+import defaultImage from "../assets/image.jpg";
 import TrackCard from "./TrackCard";
 
 const PlaylistCard = ({ element }) => {
 
     const [showTracks, setShowTracks] = useState(false)
+    const [showVinyls, setShowVinyls] = useState(false);
+    const [recomendationIsLoading, setRecomendationIsLoading] = useState([false]);
+    const [vinyls, setVinyls] = useState([]);
     const onShowTracksClicked = () => {
         console.log(showTracks)
         console.log("pressed on show tracks")
@@ -37,6 +42,8 @@ const PlaylistCard = ({ element }) => {
 
     async function getRecommendation() {
 
+        setShowVinyls(true)
+
         let genres = []
         let authors = []
 
@@ -64,17 +71,38 @@ const PlaylistCard = ({ element }) => {
                 "likedArtists": authors,
                 "likedGenres": genres,
                 "limit": 100,
-                "pageSize": 10,
-                "pageIndex": Math.floor(Math.random() * 10)
+                "pageSize": 5,
+                "pageIndex": Math.floor(Math.random() * 3)
             })
         }
 
+        setRecomendationIsLoading(true);
         const res = await fetch(preferencesURL, requestOptions);
         res.json()
         .then(res => {
             console.log(res)
+            loadVinyls(res.results)
         })
         .catch(err => console.log(err))
+    }
+
+    async function loadVinyls(fetchData) {
+        const vinyls = fetchData
+        const albumArt = require('album-art')
+
+        setRecomendationIsLoading(false)
+
+        for (let vinyl of vinyls) {
+            try {
+                const art = await albumArt(vinyl.artist, {album: vinyl.vinyl})
+                vinyl.imgPath = art;
+            } catch (e) {
+                vinyl.imgPath = defaultImage;
+                console.log(e);
+            }
+
+        }
+        setVinyls(vinyls)
     }
 
     return (
@@ -123,6 +151,22 @@ const PlaylistCard = ({ element }) => {
         {
             showTracks ? <Tracks/> : null
         }
+        <Center>
+        {showVinyls ?
+                recomendationIsLoading
+                    ?
+                    <Spinner
+                        thickness='4px'
+                        speed='0.65s'
+                        emptyColor='gray.200'
+                        color='teal.500'
+                        size='xl'
+                        alignSelf={'center'}/>
+                    :
+                    <ElementsList elements={vinyls} />
+                : null
+            }
+        </Center>
         </>
     );
 }
